@@ -12,14 +12,11 @@ function App() {
 
   useEffect(() => {
     const onBeforeUnload = () => {
-      // Set the scroll position to the top when the component is unmounted (e.g., when the page is reloaded)
       window.scrollTo(0, 0);
     };
 
-    // Attach the event listener
     window.addEventListener("beforeunload", onBeforeUnload);
 
-    // Clean up the event listener when the component is unmounted
     return () => {
       window.removeEventListener("beforeunload", onBeforeUnload);
     };
