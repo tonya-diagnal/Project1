@@ -8,7 +8,7 @@ export default function ResponsiveGrid(props) {
     <Box sx={{ display: "flex", backgroundColor: "#171717" }}>
       <Container
         sx={{
-          marginTop: "69px",
+          marginTop: "60px",
           minHeight: "100vh",
           // "@media (max-width:540px)": {
           //   marginTop: "85px", // Set to 'auto' to remove the min-height property

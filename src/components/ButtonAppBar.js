@@ -21,13 +21,21 @@ export default function ButtonAppBar(props) {
   // }));
 
   const [showSearchBar, setShowSearchBar] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
+
   const searchIconClickHandler = () => {
+    setShowSearchBar((prev) => !prev);
+  };
+  const backButtonHandler = () => {
     setShowSearchBar((prev) => !prev);
   };
 
   const searchItemHandler = (event) => {
     props.searchHandleFun(event.target.value);
     console.log(event.target.value);
+    setSearchValue(event.target.value);
+    // props.searchHandleFun(searchValue);
+    // console.log(searchValue);
   };
 
   return (
@@ -39,50 +47,62 @@ export default function ButtonAppBar(props) {
         // }}
         sx={{
           background:
-            " linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 68%,  rgba(0,0,0,0.1) 100%)",
+            " linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%,  rgba(0,0,0,0.1) 100%)",
           boxShadow: "none",
         }}
       >
         <Toolbar
           sx={{
             display: "flex",
-            flexWrap: "wrap",
-            flexGrow: 1,
-            minHeight: "90px",
-            "@media (min-width:540px)": {
-              minHeight: "90px", // Set to 'auto' to remove the min-height property
-            },
+            // flexWrap: "wrap",
+            justifyContent: "space-between",
+            // flexGrow: 1,
+            minHeight: "75px",
+            // "@media (min-width:540px)": {
+            //   minHeight: "85px", // Set to 'auto' to remove the min-height property
+            // },
             // "@media (max-width:540px)": {
             //   minHeight: "120px", // Set to 'auto' to remove the min-height property
             // },
           }}
         >
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography
-            variant="h1"
-            fontFamily="Titillium Web"
-            // fontWeight={400}
-            component="div"
-            fontSize="1.8em"
-            color="white"
-            sx={{ flexGrow: 3 }}
-            // minWidth="80%"
-          >
-            Romantic Comedy
-          </Typography>
+          <Box display={"flex"} alignItems={"center"}>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={backButtonHandler}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            {!showSearchBar && (
+              <Typography
+                variant="h1"
+                fontFamily="Titillium Web"
+                // fontWeight={400}
+                component="div"
+                fontSize="1.6em"
+                color="white"
+                // sx={{ flexGrow: 1 }}
+                // minWidth="80%"
+              >
+                Romantic Comedy
+              </Typography>
+            )}
+          </Box>
+
           {/* <p>Romantic Comedy</p> */}
-          <Box
+          {/* <Box
             display={"flex"}
             justifyContent={"flex-end"}
             sx={{ flexGrow: 1, flexWrap: "wrap" }}
+          > */}
+          <Box
+            display={"flex"}
+            justifyContent={"flex-end"}
+            sx={{ flexGrow: 1 }}
           >
             {showSearchBar && (
               <Input
@@ -91,20 +111,25 @@ export default function ButtonAppBar(props) {
                   borderRadius: "8px",
                   // maxWidth: "30%",
                   flexGrow: 1,
-                  maxWidth: "220px",
-                  minWidth: "100px",
+                  // maxWidth: "220px",
+                  minWidth: "50px",
                   // justifyContent: "flex-end",
                 }}
-                placeholder="Enter Data"
+                placeholder="Type to search"
                 onChange={searchItemHandler}
+                autoFocus
+                value={searchValue}
               />
             )}
-            <Button
+            {/* {!showSearchBar && ( */}
+            <IconButton
+            sx={{paddingLeft:"20px"}}
               onClick={searchIconClickHandler}
               // sx={{ justifySelf: "flex-end" }}
             >
-              <SearchIcon sx={{ color: "white", fontSize: 33 }} />
-            </Button>
+              <SearchIcon sx={{ color: "white", fontSize: 28 }} />
+            </IconButton>
+            {/* )} */}
           </Box>
 
           {/* <Fade in={showSearchBar}>
