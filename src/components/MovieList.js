@@ -1,73 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Typography } from "@mui/material";
-// import InfiniteScroll from "react-infinite-scroll-component";
 
-const debounce = (func, delay) => {
-  let timer;
-  return function (...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => func(...args), delay);
-  };
-};
-var hasMore = true;
-var isLoading = false;
+var page = 1;
+
 const MovieList = (props) => {
-  const [movies, setMovies] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const observerTarget = useRef(null);
 
   useEffect(() => {
-    if (hasMore && !isLoading) {
-      // setIsLoading(true);
-      isLoading = true;
-      fetchData(currentPage);
-      // setIsLoading(false);
-      isLoading = false;
-    }
-  }, [currentPage]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchData();
+        }
+      },
+      { threshold: 1 }
+    );
 
-  const handleScroll = () => {
-    if (
-      window.innerHeight + window.scrollY + 1 >=
-      document.documentElement.scrollHeight
-    ) {
-      setCurrentPage((p) => p + 1);
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
     }
-  };
-  useEffect(() => {
-    window.addEventListener("scroll", debounce(handleScroll, 500), {
-      passive: true,
-    });
 
     return () => {
-      window.removeEventListener("scroll", debounce(handleScroll, 500));
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
     };
-  }, []);
+  }, [observerTarget]);
+
+  const [movies, setMovies] = useState([]);
 
   const fetchData = async () => {
-    console.log(currentPage);
     try {
       const response = await fetch(
-        `https://test.create.diagnal.com/data/page${currentPage}.json`
+        `https://test.create.diagnal.com/data/page${page}.json`
       );
       var res = await response.json();
       var d = res["page"]["content-items"]["content"];
       setMovies((prev) => [...prev, ...d]);
-      // setIsLoading(false);
+      page++;
     } catch (error) {
-      hasMore = false;
+      setHasMore(false);
       console.error(error);
     }
   };
 
   const imageErrorHandler = (event) => {
-    // event.target.src =
-    //   "https://safesendsoftware.com/wp-content/uploads/2016/06/Human-Error.jpg";
     event.target.src =
       "https://test.create.diagnal.com/images/placeholder_for_missing_posters.png";
   };
+
   var filteredList = [];
   if (props.searchTerm === "") {
     filteredList = movies;
@@ -77,64 +61,45 @@ const MovieList = (props) => {
     );
   }
 
-  return filteredList.map((movie, index) => (
-    <Grid xs={4} md={4} key={index}>
-      <Paper
-        key={index}
-        elevation={5}
-        sx={{
-          overflow: "hidden",
-          backgroundColor: "black",
-        }}
-      >
-        {
-          <img
-            src={`https://test.create.diagnal.com/images/${movie["poster-image"]}`}
-            onError={imageErrorHandler}
-            alt="placeholder"
-            style={{
-              aspectRatio: 2 / 3,
-              width: "100%",
-              // height: "100%",
+  return (
+    <React.Fragment>
+      {filteredList.map((movie, index) => (
+        <Grid xs={4} md={4} key={index}>
+          <Paper
+            key={index}
+            elevation={5}
+            sx={{
+              overflow: "hidden",
+              backgroundColor: "black",
             }}
-          />
-        }
-        {/* 
-        <Box
-          display={"flex"}
-          flexWrap={"wrap"}
-          alignItems={"center"}
-          justifyContent="space-between"
-          bgcolor="black"
-        >*/}
-        {/* <p
-          style={{
-            fontFamily: "Titillium Web",
-            fontSize: "1.2em",
-            color: "white",
-            minWidth: "100%",
-            marginTop: "3px",
-            fontWeight: "lighter",
-            // height: "100%",
-          }}
-        >
-          {movie["name"]}
-        </p> */}
-        <Typography
-          variant="body2"
-          fontFamily="Titillium Web"
-          component="div"
-          fontSize="1.3em"
-          fontWeight={0}
-          color="white"
-          sx={{ flexGrow: 1 }}
-        >
-          {movie["name"]}
-        </Typography>
-        {/* </Box> */}
-      </Paper>
-    </Grid>
-  ));
+          >
+            <img
+              src={`https://test.create.diagnal.com/images/${movie["poster-image"]}`}
+              onError={imageErrorHandler}
+              alt="placeholder"
+              style={{
+                aspectRatio: 2 / 3,
+                width: "100%",
+              }}
+            />
+
+            <Typography
+              variant="body2"
+              fontFamily="Titillium Web"
+              component="div"
+              fontSize="0.88em"
+              fontWeight={0}
+              color="white"
+              sx={{ flexGrow: 1 }}
+            >
+              {movie["name"]}
+            </Typography>
+          </Paper>
+        </Grid>
+      ))}
+      {hasMore && <div ref={observerTarget}></div>}
+    </React.Fragment>
+  );
 };
 
 export default MovieList;

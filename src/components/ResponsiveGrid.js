@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Container, Box } from "@mui/material";
-import MovieList from "./MovieList3";
+import MovieList from "./MovieList";
 
 export default function ResponsiveGrid(props) {
   return (
@@ -10,11 +10,6 @@ export default function ResponsiveGrid(props) {
         sx={{
           marginTop: "60px",
           minHeight: "100vh",
-          // "@media (max-width:540px)": {
-          //   marginTop: "85px", // Set to 'auto' to remove the min-height property
-          // },
-          // paddingTop: "0px"
-          // paddingTop:0
         }}
       >
         (
