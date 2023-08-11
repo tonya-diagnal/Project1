@@ -83,7 +83,7 @@ export default function ButtonAppBar(props) {
                 fontFamily="Titillium Web"
                 // fontWeight={400}
                 component="div"
-                fontSize="1.3em"
+                fontSize="1.4em"
                 color="white"
                 // sx={{ flexGrow: 1 }}
                 // minWidth="80%"

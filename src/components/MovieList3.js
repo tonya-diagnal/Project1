@@ -95,7 +95,7 @@ const MovieList3 = (props) => {
               variant="body2"
               fontFamily="Titillium Web"
               component="div"
-              fontSize="0.85em"
+              fontSize="0.88em"
               fontWeight={0}
               color="white"
               sx={{ flexGrow: 1 }}
