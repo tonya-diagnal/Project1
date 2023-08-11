@@ -83,7 +83,7 @@ export default function ButtonAppBar(props) {
                 fontFamily="Titillium Web"
                 // fontWeight={400}
                 component="div"
-                fontSize="1.6em"
+                fontSize="1.3em"
                 color="white"
                 // sx={{ flexGrow: 1 }}
                 // minWidth="80%"
@@ -123,7 +123,7 @@ export default function ButtonAppBar(props) {
             )}
             {/* {!showSearchBar && ( */}
             <IconButton
-            sx={{paddingLeft:"20px"}}
+              sx={{ paddingLeft: "20px" }}
               onClick={searchIconClickHandler}
               // sx={{ justifySelf: "flex-end" }}
             >
