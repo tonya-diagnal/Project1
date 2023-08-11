@@ -1,2 +1,2 @@
-# project1
-  training project1
+# Project1
+  Training Project 1
