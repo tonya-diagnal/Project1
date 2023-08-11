@@ -57,7 +57,7 @@ export default function ButtonAppBar(props) {
                 variant="h1"
                 fontFamily="Titillium Web"
                 component="div"
-                fontSize="1.4em"
+                fontSize="1.5rem"
                 color="white"
               >
                 Romantic Comedy
